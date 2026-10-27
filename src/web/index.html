@@ -1,0 +1,68 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Idea board</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="app.js" defer></script>
+</head>
+<body>
+    <main>
+        <header class="page-header">
+            <h1>Idea board</h1>
+            <button id="theme-toggle" type="button" aria-pressed="false">
+                Dark mode
+            </button>
+        </header>
+
+        <section aria-labelledby="add-heading">
+            <h2 id="add-heading">Add a new idea</h2>
+            <form id="idea-form">
+                <label for="title">Idea title</label>
+                <input id="title" name="title" type="text" required>
+
+                <label for="body">Description</label>
+                <textarea id="body" name="body"></textarea>
+
+                <label for="author">Author</label>
+                <input id="author" name="author" type="text">
+
+                <button type="submit">Add Idea</button>
+            </form>
+            <p id="form-message" role="status" aria-live="polite"></p>
+        </section>
+
+        <section aria-labelledby="ideas-heading">
+            <h2 id="ideas-heading">All ideas</h2>
+
+            <label for="voter">Your name (for voting)</label>
+            <input id="voter" type="text">
+
+            <div class="controls">
+                <div>
+                    <label for="search">Search ideas</label>
+                    <input id="search" type="search"
+                           placeholder="Search titles or descriptions">
+                </div>
+
+                <div>
+                    <label for="sort">Sort by</label>
+                    <select id="sort">
+                        <option value="votes">Most votes</option>
+                        <option value="newest">Newest</option>
+                        <option value="title">Title A–Z</option>
+                    </select>
+                </div>
+            </div>
+
+            <p id="idea-count" aria-live="polite"></p>
+            <p id="status" role="status" aria-live="polite"></p>
+            <button id="retry" type="button" hidden>Retry loading ideas</button>
+
+            <ul id="ideas"></ul>
+        </section>
+    </main>
+</body>
+</html>

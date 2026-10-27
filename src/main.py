@@ -1,11 +1,14 @@
 from fastapi import FastAPI, HTTPException
 from sqlmodel import SQLModel, Field, Session, create_engine, func, select
+from fastapi.staticfiles import StaticFiles
+
 
 class Idea(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
     title: str
     body: str = ""
     author: str = ""
+
 
 class Vote(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
@@ -16,19 +19,24 @@ class Vote(SQLModel, table=True):
 # database and you get a 500 instead of a 422. So each request body gets its
 # own non-table class. It also keeps `id` and `idea_id` out of what a client
 # may send: the database assigns the first, and the URL supplies the second.
+
+
 class IdeaCreate(SQLModel):
     title: str
     body: str = ""
     author: str = ""
 
+
 class VoteCreate(SQLModel):
     voter: str
+
 
 # echo=True prints every SQL statement the ORM sends. Turn it on to answer the
 # check-in's SQL question.
 engine = create_engine("sqlite:///app.db")
 SQLModel.metadata.create_all(engine)
 app = FastAPI()
+
 
 @app.get("/ideas")
 def list_ideas():
@@ -44,12 +52,16 @@ def list_ideas():
     with Session(engine) as s:
         return [{**idea.model_dump(), "vote_count": n} for idea, n in s.exec(stmt)]
 
+
 @app.post("/ideas", status_code=201)
 def create_idea(payload: IdeaCreate):
     idea = Idea(**payload.model_dump())
     with Session(engine) as s:
-        s.add(idea); s.commit(); s.refresh(idea)
+        s.add(idea)
+        s.commit()
+        s.refresh(idea)
         return idea
+
 
 @app.get("/ideas/{idea_id}")
 def get_idea(idea_id: int):
@@ -60,11 +72,17 @@ def get_idea(idea_id: int):
         votes = s.exec(select(Vote).where(Vote.idea_id == idea_id)).all()
         return {**idea.model_dump(), "votes": votes}
 
+
 @app.post("/ideas/{idea_id}/vote", status_code=201)
 def vote(idea_id: int, payload: VoteCreate):
     with Session(engine) as s:
         if not s.get(Idea, idea_id):
             raise HTTPException(404, "no such idea")
         vote = Vote(idea_id=idea_id, **payload.model_dump())
-        s.add(vote); s.commit(); s.refresh(vote)
+        s.add(vote)
+        s.commit()
+        s.refresh(vote)
         return vote
+
+
+app.mount("/", StaticFiles(directory="web", html=True), name="web")

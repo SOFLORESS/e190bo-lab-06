@@ -1,0 +1,159 @@
+
+:root {
+    --bg: #f5f6fa;
+    --surface: #ffffff;
+    --ink: #202434;
+    --muted: #555e70;
+    --border: #d6dae3;
+    --accent: #3659bd;
+    --accent-ink: #ffffff;
+    --highlight: #fff2c6;
+}
+
+:root[data-theme="dark"] {
+    --bg: #151923;
+    --surface: #242a37;
+    --ink: #f2f4fa;
+    --muted: #c2c8d4;
+    --border: #50596c;
+    --accent: #a3b9ff;
+    --accent-ink: #111827;
+    --highlight: #403b25;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: Arial, sans-serif;
+    line-height: 1.5;
+}
+
+main {
+    max-width: 850px;
+    margin: 0 auto;
+    padding: 24px;
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+}
+
+section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+}
+
+label {
+    display: block;
+    margin-top: 12px;
+    margin-bottom: 6px;
+    font-weight: bold;
+}
+
+input, textarea, select {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--surface);
+    color: var(--ink);
+    font: inherit;
+}
+
+textarea {
+    min-height: 90px;
+}
+
+button {
+    margin-top: 12px;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 6px;
+    background: var(--accent);
+    color: var(--accent-ink);
+    font: inherit;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    opacity: 0.85;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 3px;
+}
+
+.controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 20px;
+}
+
+#ideas {
+    list-style: none;
+    padding: 0;
+}
+
+.idea-card {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    margin: 12px 0;
+    overflow-wrap: anywhere;
+}
+
+.idea-card h3 {
+    margin-top: 0;
+}
+
+.top-idea {
+    border: 2px solid var(--accent);
+    background: var(--highlight);
+}
+
+.top-label {
+    display: inline-block;
+    margin-bottom: 12px;
+    font-weight: bold;
+}
+
+#status, #form-message, #idea-count {
+    color: var(--muted);
+}
+
+@media (max-width: 500px) {
+    main {
+        padding: 12px;
+    }
+
+    section {
+        padding: 16px;
+    }
+
+    .controls {
+        grid-template-columns: 1fr;
+    }
+
+    .page-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
